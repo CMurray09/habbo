@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Enums\Role;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -9,7 +10,6 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\PasswordConfirmation;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
-use Role;
 
 class User extends Resource
 {
