@@ -3,9 +3,12 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\PasswordConfirmation;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Role;
 
 class User extends Resource
@@ -30,11 +33,15 @@ class User extends Resource
      * @var array
      */
     public static array $search = [
-        'id', 'name', 'email',
+        'id',
+        'username',
+        'habboname',
+        'role',
+        'created_at'
     ];
 
     /**
-     * Get the fields displayed by the resource.
+     * Get the fields displayed by the resource. from there
      *
      * @param Request $request
      * @return array
