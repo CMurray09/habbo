@@ -145,6 +145,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'motto' => [
+            'required' => "The user's motto does not match the given motto code.",
+        ]
     ],
 
     /*

@@ -9,25 +9,41 @@
         <jet-validation-errors class="mb-4" />
 
         <form @submit.prevent="submit">
+            <!-- Username -->
             <div>
-                <jet-label for="name" value="Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
+                <jet-label for="username" value="Username" />
+                <jet-input id="username" type="text" class="mt-1 block w-full" v-model="form.username" required autofocus autocomplete="username" />
+            </div>
+            <jet-input-error :message="form.errors.username" class="mt-2" />
+
+            <!-- Habbo name -->
+            <div class="mt-4">
+                <jet-label for="habboname" value="Habbo Name" />
+                <jet-input id="habboname" type="text" class="mt-1 block w-full" v-model="form.habboname" required />
+                <jet-input-error :message="form.errors.habboname" class="mt-2" />
+                <jet-input-error :message="form.errors.motto" class="mt-2" />
             </div>
 
+            <!-- Habbo motto -->
             <div class="mt-4">
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
+                <jet-label for="habbocode" value="Habbo Motto Code" />
+                <div class="grid grid-cols-3 gap-4">
+                    <jet-input id="habbocode" class="col-span-2" type="text" readonly value="HabboDome-Register"/>
+                    <jet-button id="copycode" type="button" class="col-span-1" v-on:click="copyToClipboard()">Copy</jet-button>
+                </div>
             </div>
 
             <div class="mt-4">
                 <jet-label for="password" value="Password" />
                 <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
             </div>
+            <jet-input-error :message="form.errors.password" class="mt-2" />
 
             <div class="mt-4">
                 <jet-label for="password_confirmation" value="Confirm Password" />
                 <jet-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
             </div>
+            <jet-input-error :message="form.errors.password_confirmation" class="mt-2" />
 
             <div class="mt-4" v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature">
                 <jet-label for="terms">
@@ -61,6 +77,7 @@
     import JetButton from '@/Jetstream/Button.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
+    import JetInputError from '@/Jetstream/InputError'
     import JetLabel from '@/Jetstream/Label.vue'
     import JetValidationErrors from '@/Jetstream/ValidationErrors.vue'
     import { Head, Link } from '@inertiajs/inertia-vue3';
@@ -73,6 +90,7 @@
             JetButton,
             JetInput,
             JetCheckbox,
+            JetInputError,
             JetLabel,
             JetValidationErrors,
             Link,
@@ -81,8 +99,8 @@
         data() {
             return {
                 form: this.$inertia.form({
-                    name: '',
-                    email: '',
+                    username: '',
+                    habboname: '',
                     password: '',
                     password_confirmation: '',
                     terms: false,
@@ -91,6 +109,12 @@
         },
 
         methods: {
+            copyToClipboard() {
+                const copyText = document.getElementById("habbocode");
+                copyText.select();
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+            },
             submit() {
                 this.form.post(this.route('register'), {
                     onFinish: () => this.form.reset('password', 'password_confirmation'),
