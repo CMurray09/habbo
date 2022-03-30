@@ -29,7 +29,7 @@ class UserMottoController extends Controller
      * @return string|null from api
      * @throws GuzzleException
      */
-    public function getMotto(string|null $name): string|null
+    public function getMotto(string|null $name, string $code = 'HabboDome-Register'): string|null
     {
         $client = new Client();
         $apiResult['motto'] = '';
@@ -40,6 +40,6 @@ class UserMottoController extends Controller
         } catch(Exception) {
             // do nothing
         }
-        return $apiResult['motto'] === 'HabboDome-Register' ? $apiResult['motto'] : null;
+        return $apiResult['motto'] === $code ? $apiResult['motto'] : null;
     }
 }
