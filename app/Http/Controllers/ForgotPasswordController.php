@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Http\Controllers\UserMottoController as Motto;
 use App\Models\User;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use App\Http\Controllers\UserMottoController as Motto;
 
 class ForgotPasswordController extends Controller
 {
@@ -27,8 +29,8 @@ class ForgotPasswordController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param StatefulGuard  $guard
-     * @return void
+     * @param StatefulGuard $guard
+     * @param User $user
      */
     public function __construct(StatefulGuard $guard, User $user)
     {
@@ -39,8 +41,9 @@ class ForgotPasswordController extends Controller
     /**
      * Reset the user's password.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return RedirectResponse
+     * @throws GuzzleException
      */
     public function resetPassword(Request $request): RedirectResponse
     {
@@ -49,9 +52,10 @@ class ForgotPasswordController extends Controller
         $request->validate([
             'username' => 'required',
             'habboname' => 'required',
-            'motto' => ['required'],
+            'motto' => 'required',
             'password' => $this->passwordRules(),
         ]);
+
 
         $user = $this->user
             ->where('username', 'LIKE', $request['username'])
@@ -60,6 +64,8 @@ class ForgotPasswordController extends Controller
             'username' => $request['username'],
             'habboname' => $request['habboname'],
             'password' => Hash::make($request['password'])]);
+
+        event(new PasswordReset($user));
 
         return redirect()->route('login');
     }
