@@ -3,15 +3,15 @@
 namespace App\Actions\Fortify;
 
 use App\Enums\Role;
+use App\Http\Controllers\UserMottoController as Motto;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
-use App\Http\Controllers\UserMottoController as Motto;
-use Illuminate\Validation\ValidationException;
 
 
 class CreateNewUser implements CreatesNewUsers

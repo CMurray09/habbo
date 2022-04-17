@@ -13,14 +13,14 @@ class PasswordResetTest extends TestCase
 
     public function test_password_can_be_reset(): bool
     {
-        $user['username'] = 'HabboDome';
-        $user['habboname'] = 'HabboDome';
+        $user['username'] = 'HabboDomeReset';
+        $user['habboname'] = 'HabboDomeReset';
         $user['password'] = 'test';
         $user = User::factory()->create($user);
 
         $myArray = array(
-            'username' => 'HabboDome',
-            'habboname' => 'HabboDome',
+            'username' => 'HabboDomeReset',
+            'habboname' => 'HabboDomeReset',
             'motto' => 'HabboDome-Reset',
             'password' => 'Password123',
         );
@@ -28,8 +28,8 @@ class PasswordResetTest extends TestCase
         $this->json('POST', 'password-reset', $myArray);
 
         $this->assertDatabaseHas('users', [
-            'username' => 'HabboDome',
-            'habboname' => 'HabboDome',
+            'username' => 'HabboDomeReset',
+            'habboname' => 'HabboDomeReset',
             'password' => Hash::check('Password123', $user->password),
         ]);
 

@@ -2,12 +2,12 @@
 
 namespace App\Actions\Fortify;
 
+use App\Http\Controllers\UserMottoController as Motto;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
-use App\Http\Controllers\UserMottoController as Motto;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
@@ -22,8 +22,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update($user, array $input)
     {
         $motto = new Motto();
-        $input['motto'] = $motto->getMotto($input['habboname']);
-        dd($input);
+        $input['motto'] = $motto->getMotto($input['habboname'], 'HabboDome-Update');
         Validator::make($input, [
             'username' => ['required', 'string', 'min:3', 'max:20', Rule::unique('users')->ignore($user->id)],
             'habboname' => ['required', 'string', Rule::unique('users')->ignore($user->id)],
@@ -38,8 +37,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Update the given verified user's profile information.
      *
-     * @param  mixed  $user
-     * @param  array  $input
+     * @param mixed $user
+     * @param array $input
      * @return void
      */
     protected function updateVerifiedUser(mixed $user, array $input)
