@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Enums\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -17,6 +20,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+        Nova::createUserUsing(function($command) {
+            return [
+                $command->ask('Username'),
+                $command->ask('Habboname'),
+                $command->secret('Password'),
+            ];
+        }, function($name, $email, $password) {
+            (new User)->forceFill([
+                'username' => $name,
+                'habboname' => $email,
+                'password' => Hash::make($password),
+                'created_at' => now(),
+                'role' => Role::STANDARD->value,
+            ])->save();
+        });
     }
 
     /**
