@@ -20,7 +20,7 @@
             <!-- Habbo name -->
             <div class="col-span-6 sm:col-span-4">
                 <jet-label for="habboname" value="Habboname"/>
-                <jet-input id="habboname" type="text" class="mt-1 block w-full" v-model="form.name"
+                <jet-input id="habboname" type="text" class="mt-1 block w-full" v-model="form.habboname" required
                            autocomplete="habboname"/>
                 <jet-input-error :message="form.errors.habboname" class="mt-2"/>
                 <jet-input-error :message="form.errors.motto" class="mt-2"/>
