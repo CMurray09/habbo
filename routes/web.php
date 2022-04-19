@@ -25,6 +25,7 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/play', 'PlayController@loadView')->name('play');
 
 Route::redirect('/nova/login', '/login');
 
