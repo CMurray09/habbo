@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use Inertia\Response;
+
 class PlayController extends Controller
 {
-    public function loadView()
+    public function loadView(): Response
     {
-        // return the vue page.
+        return Inertia::render('Play');
     }
 }
