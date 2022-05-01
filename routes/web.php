@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\PlayController;
+use App\Http\Controllers\GameController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,7 +26,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/play', [PlayController::class, 'loadView'])->name('play');
+Route::get('/play', [GameController::class, 'loadView'])->name('play');
 
 Route::redirect('/nova/login', '/login');
 

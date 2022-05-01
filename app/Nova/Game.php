@@ -9,14 +9,14 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
-class Play extends Resource
+class Game extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static string $model = \App\Models\Play::class;
+    public static string $model = \App\Models\Game::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
