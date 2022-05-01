@@ -12,14 +12,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('play', function (Blueprint $table) {
+        Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
             $table->string('owner');
             $table->string('room_link');
             $table->string('co_owner')->nullable();
             $table->integer('room_count');
             $table->string('category');
-            $table->string('play_type');
+            $table->string('game_type');
             $table->string('name');
             $table->string('thumbnail');
             $table->timestamps();
@@ -33,6 +33,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('play');
+        Schema::dropIfExists('games');
     }
 };
