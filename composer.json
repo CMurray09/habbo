@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
@@ -13,7 +16,8 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "tightenco/ziggy": "^1.0",
-        "laravel/nova": "*"
+        "laravel/nova": "*",
+        "cmurray09/external-image": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -27,6 +31,10 @@
         {
             "type": "path",
             "url": "./nova"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/ExternalImage"
         }
     ],
     "autoload": {
