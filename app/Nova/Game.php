@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Cmurray09\ExternalImage\ExternalImage;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -94,6 +95,11 @@ class Game extends Resource
             DateTime::make('updated_at')
                 ->onlyOnDetail()
                 ->sortable(),
+            ExternalImage::make('Thumbnail', 'thumbnail')
+                ->width(80)
+                ->height(80)
+                ->rules('required', 'regex:/^(https:\/\/habbo-stories-content\.s3\.amazonaws\.com\/servercamera\/purchased' .
+                    '\/hhus\/p-[a-zA-Z0-9]{8}[-][a-zA-Z0-9]{13}[.](png)$)/')
         ];
     }
 
