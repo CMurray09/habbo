@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "autoprefixer": "10.4.5",
+        "foundation-sites": "^6.7.4",
         "jquery": "^3.6.0",
         "slick-carousel": "^1.8.1"
     }
