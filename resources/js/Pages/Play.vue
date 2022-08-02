@@ -13,7 +13,7 @@
                             <p>__________________________________</p>
                         </div>
                         <div id="iconContainer">
-                <span>
+                <span id="addToFavourites">
                     <i aria-hidden="true" class="fa fa-heart" data-tooltip tabindex="1" title="Favourite"></i>
                 </span>
                             <span>
@@ -98,7 +98,7 @@
                             <div class="sliderContentChild">
                                 <div class="gameImageContainer">
                                     <img :src="game.thumbnail" class="gameThumbnail">
-                                    <p class="hideData">{{ game.id }}</p>
+                                    <p class="hideData gameID">{{ game.id }}</p>
                                     <p class="hideData gameOwner">{{ game.owner }}</p>
                                     <p class="hideData room_link">{{ game.room_link }}</p>
                                     <p class="hideData">{{ game.co_owner }}</p>
@@ -312,6 +312,13 @@ export default defineComponent({
                         fitty('#homeIconInfo', {
                             minSize: 6,
                             maxSize: 16,
+                        });
+                        document.getElementById('addToFavourites').addEventListener('click', () => {
+                            const gameID = $(this).find('.gameID')[0].innerHTML;
+                            axios.post(`/user/play/add-to-favourites/${gameID}`)
+                                .then(response => {
+                                    console.log('Success');
+                                })
                         });
                     },
                     mouseenter: function () {
