@@ -313,13 +313,25 @@ export default defineComponent({
                             minSize: 6,
                             maxSize: 16,
                         });
-                        document.getElementById('addToFavourites').addEventListener('click', () => {
-                            const gameID = $(this).find('.gameID')[0].innerHTML;
+                        const gameID = $(this).find('.gameID')[0].innerHTML;
+                        $('#addToFavourites').on('click', () => {
                             axios.post(`/user/play/add-to-favourites/${gameID}`)
-                                .then(response => {
-                                    console.log('Success');
-                                })
-                        });
+                                .then((response) => {
+                                    const faHeart = $('.fa-heart');
+                                    if (faHeart.css('color') === 'rgb(255, 26, 26)') {
+                                        faHeart.css({ 'color': 'rgb(204, 204, 194)' });
+                                    } else {
+                                        faHeart.css({ 'color': 'red' });
+                                    }
+                                }).catch(function (error) {
+                                if (error.response && error.response.status === 401) {
+                                    window.location.href = "/login";
+                                } else {
+                                    $('.fa-heart').css({ 'color': 'rgb(204, 204, 194)' });
+                                    console.log(error);
+                                }
+                            })
+                        })
                     },
                     mouseenter: function () {
                         let imgWidth = $(this).parent().width();
@@ -469,11 +481,13 @@ export default defineComponent({
                 });
                 $('#closeModalCross').click(function () {
                     document.getElementById('gameOverlay').style.display = 'none';
+                    $('#addToFavourites').off('click');
                 })
 
                 $('body').click(function (a) {
                     if (a.target.id === 'gameOverlay') {
                         document.getElementById('gameOverlay').style.display = 'none';
+                        $('#addToFavourites').off('click');
                     }
                 });
 
