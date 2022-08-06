@@ -98,6 +98,7 @@
                             <div class="sliderContentChild">
                                 <div class="gameImageContainer">
                                     <img :src="game.thumbnail" class="gameThumbnail">
+                                    <p class="hideData favID">{{ game.game_id }}</p>
                                     <p class="hideData gameID">{{ game.id }}</p>
                                     <p class="hideData gameOwner">{{ game.owner }}</p>
                                     <p class="hideData room_link">{{ game.room_link }}</p>
@@ -221,7 +222,8 @@ export default defineComponent({
                 category: String,
                 game_type: String,
                 name: String,
-            },
+                game_id: Number
+            }
         },
         created() {
             window.addEventListener("resize", this.sliderSetup);
@@ -289,6 +291,7 @@ export default defineComponent({
                 $('.sliderContent').on({
                     click: function () {
                         document.getElementById('gameOverlay').style.display = 'block';
+                        const gameID = $(this).find('.gameID')[0].innerHTML;
                         let gameOwnerName = $(this).find('.gameOwner')[0].innerHTML;
                         let gameOwnerImage = 'https://www.habbo.com/habbo-imaging/avatarimage?user=' + gameOwnerName + '&direction=4&head_direction=4&gesture=sml&crr=6&size=l&format=.gif'
                         let gameName = $(this).find('.gameName')[0].innerHTML;
@@ -313,7 +316,14 @@ export default defineComponent({
                             minSize: 6,
                             maxSize: 16,
                         });
-                        const gameID = $(this).find('.gameID')[0].innerHTML;
+
+                        // Favourite Icon
+                        if ($(this).find('.favID')[0].innerHTML > 0) {
+                            $('.fa-heart').addClass('favouriteIconMarked');
+                        } else {
+                            $('.fa-heart').removeClass('favouriteIconMarked');
+                        }
+
                         $('#addToFavourites').on('click', () => {
                             axios.post(`/user/play/add-to-favourites/${gameID}`)
                                 .then((response) => {
@@ -909,6 +919,10 @@ $gameBackgroundColour: rgb(26, 25, 25);
 
 #iconContainer span {
     padding-left: 21px;
+}
+
+.favouriteIconMarked {
+    color: red!important;
 }
 
 #homeIcon, #roomIcon, #categoryIcon, #typeIcon, #homeIconInfo,

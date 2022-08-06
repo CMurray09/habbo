@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Game as Games;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class GameController extends Controller
 {
-    private Games $games;
-
-    public function __construct(Games $games)
-    {
-        $this->games = $games;
-    }
+    public function __construct()
+    {}
 
     public function loadView(): Response
     {
@@ -23,7 +19,7 @@ class GameController extends Controller
     private function getGameData(): array
     {
         $data = [];
-        $data['games'] = $byWired = $this->games->all();
+        $data['games'] = DB::table('games')->leftJoin('favourites', 'favourites.game_id', '=', 'games.id')->get();
         return $data;
     }
 }
