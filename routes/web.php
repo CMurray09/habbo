@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\GameController;
 use Illuminate\Foundation\Application;
@@ -31,6 +32,10 @@ Route::get('/play', [GameController::class, 'loadView'])->name('play');
 Route::redirect('/nova/login', '/login');
 
 Route::post('/password-reset', [ForgotPasswordController::class, 'resetPassword'])->name('password-reset');
+
+Route::middleware('auth')->group( function() {
+    Route::post('/user/play/add-to-favourites/{gameID}', [FavouriteController::class, 'addToFavourites'])->name('favourite');
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');

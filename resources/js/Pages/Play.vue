@@ -13,7 +13,7 @@
                             <p>__________________________________</p>
                         </div>
                         <div id="iconContainer">
-                <span>
+                <span id="addToFavourites">
                     <i aria-hidden="true" class="fa fa-heart" data-tooltip tabindex="1" title="Favourite"></i>
                 </span>
                             <span>
@@ -98,7 +98,8 @@
                             <div class="sliderContentChild">
                                 <div class="gameImageContainer">
                                     <img :src="game.thumbnail" class="gameThumbnail">
-                                    <p class="hideData">{{ game.id }}</p>
+                                    <p class="hideData favID">{{ game.game_id }}</p>
+                                    <p class="hideData gameID">{{ game.id }}</p>
                                     <p class="hideData gameOwner">{{ game.owner }}</p>
                                     <p class="hideData room_link">{{ game.room_link }}</p>
                                     <p class="hideData">{{ game.co_owner }}</p>
@@ -221,7 +222,8 @@ export default defineComponent({
                 category: String,
                 game_type: String,
                 name: String,
-            },
+                game_id: Number
+            }
         },
         created() {
             window.addEventListener("resize", this.sliderSetup);
@@ -289,6 +291,7 @@ export default defineComponent({
                 $('.sliderContent').on({
                     click: function () {
                         document.getElementById('gameOverlay').style.display = 'block';
+                        const gameID = $(this).find('.gameID')[0].innerHTML;
                         let gameOwnerName = $(this).find('.gameOwner')[0].innerHTML;
                         let gameOwnerImage = 'https://www.habbo.com/habbo-imaging/avatarimage?user=' + gameOwnerName + '&direction=4&head_direction=4&gesture=sml&crr=6&size=l&format=.gif'
                         let gameName = $(this).find('.gameName')[0].innerHTML;
@@ -313,6 +316,32 @@ export default defineComponent({
                             minSize: 6,
                             maxSize: 16,
                         });
+
+                        // Favourite Icon
+                        if ($(this).find('.favID')[0].innerHTML > 0) {
+                            $('.fa-heart').addClass('favouriteIconMarked');
+                        } else {
+                            $('.fa-heart').removeClass('favouriteIconMarked');
+                        }
+
+                        $('#addToFavourites').on('click', () => {
+                            axios.post(`/user/play/add-to-favourites/${gameID}`)
+                                .then((response) => {
+                                    const faHeart = $('.fa-heart');
+                                    if (faHeart.css('color') === 'rgb(255, 26, 26)') {
+                                        faHeart.css({ 'color': 'rgb(204, 204, 194)' });
+                                    } else {
+                                        faHeart.css({ 'color': 'red' });
+                                    }
+                                }).catch(function (error) {
+                                if (error.response && error.response.status === 401) {
+                                    window.location.href = "/login";
+                                } else {
+                                    $('.fa-heart').css({ 'color': 'rgb(204, 204, 194)' });
+                                    console.log(error);
+                                }
+                            })
+                        })
                     },
                     mouseenter: function () {
                         let imgWidth = $(this).parent().width();
@@ -462,11 +491,13 @@ export default defineComponent({
                 });
                 $('#closeModalCross').click(function () {
                     document.getElementById('gameOverlay').style.display = 'none';
+                    $('#addToFavourites').off('click');
                 })
 
                 $('body').click(function (a) {
                     if (a.target.id === 'gameOverlay') {
                         document.getElementById('gameOverlay').style.display = 'none';
+                        $('#addToFavourites').off('click');
                     }
                 });
 
@@ -888,6 +919,10 @@ $gameBackgroundColour: rgb(26, 25, 25);
 
 #iconContainer span {
     padding-left: 21px;
+}
+
+.favouriteIconMarked {
+    color: red!important;
 }
 
 #homeIcon, #roomIcon, #categoryIcon, #typeIcon, #homeIconInfo,
